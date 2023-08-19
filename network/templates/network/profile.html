@@ -1,0 +1,44 @@
+{% extends "network/layout.html" %}
+
+{% load static %}
+{% block script %}
+    <script src="{% static 'network/profile.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+{% load static %}
+<br>
+    <div id="profile" class="profile">
+        <h1>{{ username }}</h1>
+        <br>
+        <h5>Following:  {{ following_count }}</h5>
+        <h5>Followed By: {{ follower_count }}</h5>
+        <br>
+        {% if user.is_authenticated %}
+        {% ifnotequal username user_check %}
+        {% if con_status %}
+            <button type="button" class="btn btn-danger" id="unfollow_button" data-tounfollow="{{ username }}">Unfollow</button>
+        {% else %}
+            <button type="button" class="btn btn-primary" id="follow_button" data-tofollow="{{ username }}">Follow</button>
+        {% endif %}
+        {% endifnotequal %}
+        {% endif %}
+    </div>
+    <br>
+    <div id="post_divs">
+        {% for posts in user_posts %}
+        <div class="allposts_wrap">
+            <div class="allposts" id="allposts {{ posts.id }}">
+                <h5><a href="{% url 'network:profile' posts.username %}">{{ posts.username }}</a></h5>
+                <p>{{ posts.timestamp }}</p>
+                {% if posts.last_edit %}
+                    <p id="p_time {{ post.id }}"><b>Last Edit:</b> {{ posts.last_edit }}</p>
+                {% endif %}
+                <p id="content {{ post.id }}" style="font-size: 18px;">{{ posts.content }}</p>
+            </div>
+            <br>
+        </div>
+        {% endfor %}
+    </div>
+    
+{% endblock %}

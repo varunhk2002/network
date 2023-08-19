@@ -1,0 +1,75 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block script %}
+    <script src="{% static 'network/index.js' %}"></script>
+{% endblock %}
+
+
+{% block body %}
+{% load static %}
+    <h1>All Posts</h1>
+    <br>
+    {% if user.is_authenticated %}
+    <div id="newpost" class="allposts">
+        <h3>New Post</h3>
+        <br>
+        <form id="postform" method="post">
+            {% csrf_token %}
+            <textarea cols="100" name="text1" id="text" class="form-control"></textarea>
+            <br>
+            <input type="submit" class="btn btn-primary" value="Post">
+        </form>
+    </div>
+    <br>
+    {% endif %}
+
+    <div id="post_divs">
+        {% for post in page_obj %}
+        <div class="allposts_wrap">
+            <div class="allposts" id="allposts {{ post.id }}">
+                <h5><a href="{% url 'network:profile' post.username %}">{{ post.username }}</a></h5>
+                <p>{{ post.timestamp }}</p>
+                {% if post.last_edit %}
+                    <p id="p_time {{ post.id }}"><b>Last Edit:</b> {{ post.last_edit }}</p>
+                {% endif %}
+                <p id="content {{ post.id }}" style="font-size: 18px;">{{ post.content }}</p>
+                {% ifequal post.username user_check %}
+                    <a role="button" class="edit_links btn btn-info" id="{{ post.id }}">EDIT</a>
+                {% else %}
+                <button type="button" class="btn btn-outline-success btn-sm like-unlike" data-like="{{ post.id }}">Like</button>
+                {% endifequal %}
+            </div>
+            <br>
+        </div>
+       
+        {% endfor %}
+    </div>
+    <br>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}" tabindex="-1">Previous</a>
+            </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                </li>
+            {% endif %}
+          {% for page in page_obj.paginator.page_range %}
+            {% if page_obj.number == page %}
+                <li class="page-item disabled"><a aria-disabled="true" class="page-link" href="?page={{ page }}">{{ page }}</a></li>
+            {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{ page }}">{{ page }}</a></li>
+            {% endif %}
+          {% endfor %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+          </li>
+        </ul>
+      </nav>
+    
+    
+{% endblock %}
+

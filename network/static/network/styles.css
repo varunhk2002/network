@@ -1,0 +1,27 @@
+body {
+    padding: 10px;
+}
+
+.allposts {
+    padding: 15px;
+    border-style: solid;
+    border-color: #8f8888;
+    border-width: 0.5px 0.5px 0.5px 0.5px;
+    border-radius: 15px 15px 15px 15px;
+}
+
+a.edit_links:not(href) {
+    color: blue;
+    cursor: pointer;
+    width: 100px;
+}
+
+#profile {
+    background-color: #cacccf;
+    padding: 15px;
+    border-width: 0.5px 0.5px 0.5px 0.5px;
+    border-radius: 15px 15px 15px 15px;
+}
+
+
+

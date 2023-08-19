@@ -1,0 +1,22 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block body %}
+    <h1>Following</h1>
+    <br>
+    <div id="posts">
+        {% for posts in following_posts %}
+        <div class="allposts_wrap">
+            <div class="allposts">
+                <h5><a href="{% url 'network:profile' posts.username %}">{{ posts.username }}</a></h5>
+                <p>{{ posts.timestamp }}</p>
+                {% if posts.last_edit %}
+                    <p id="p_time {{ posts.id }}"><b>Last Edit:</b> {{ posts.last_edit }}</p>
+                {% endif %}
+                <p id="content {{ posts.id }}" style="font-size: 18px;">{{ posts.content }}</p>
+            </div>
+            <br>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}
